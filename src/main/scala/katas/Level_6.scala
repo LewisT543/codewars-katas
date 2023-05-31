@@ -1,5 +1,7 @@
 package katas
 
+import scala.collection.immutable.HashMap
+
 object Level_6 {
   object DeleteMultiplesBeyondN {
     val title = "Delete occurrences of an element if it occurs more than n times"
@@ -61,6 +63,70 @@ object Level_6 {
 
     def isReverse(chunk: String): Boolean = {
       chunk.split("").map(d => d.toInt * d.toInt * d.toInt).sum % 2 == 0
+    }
+  }
+
+  object Tribonacci {
+    val title = "Tribonacci"
+    val description = "Fibonacci, but with the last 3 not last 2"
+    val difficulty = 6
+
+//    object MySolution {
+      //    def tribonacci[T: Numeric](signature: List[T], n: Int): List[T] =
+      //      if (n == 0) return List()
+      //      signature match {
+      //        case sig if sig.last == 0 => sig.slice(0, n)
+      //        case sig => List[T] sig tailRecTrib(n)
+      //    }
+      //    def tailRecTrib[T: Numeric](i: Int, memo: scala.collection.mutable.Map[Int, T] = scala.collection.mutable.Map()): Int =  {
+      //      if (memo.contains(i)) return memo(i)
+      //      if (i <= 2) return 1
+      //      memo(i) = tailRecTrib(i - 1, memo) + tailRecTrib(i - 2, memo) + tailRecTrib(i - 3, memo)
+      //      memo(i)
+      //    }
+//    }
+
+    object IdealSolution {
+      def tribonacci[T: Numeric](signature: List[T], n: Int): List[T] =
+        // dear god you got that wrong lewis
+        if (n <= 3) signature.take(n) else signature.head +: tribonacci(signature.tail :+ signature.sum, n - 1)
+    }
+
+    object AnotherIdealSolution {
+      def tribonacci[T: Numeric](signature: List[T], n: Int): List[T] = {
+        def recur(result: List[T], acc: Int): List[T] = acc match {
+          case 0 => result
+          case _ => result.head :: recur(result.tail :+ result.sum, acc - 1)
+        }
+        recur(signature, n)
+      }
+    }
+  }
+
+  object PermuteAPalindrome {
+    val title = "Permute a Palindrome"
+    val description = "Given a list find of chars, determine where a palindrome can be made from those chars"
+    val difficulty = 6
+
+    object MySolution {
+      // cute but it doesnt work does it
+      //      def permutePalindrome(input: String): Boolean =
+      //      // fold over input, if acc.contains(char) add 1 to value, else add the (char,1) pair
+      //        input.foldLeft(Map.empty[Char, Int])((acc, char) => char match {
+      //          case (acc, c) if acc.contains(c) => acc + (c -> acc(char) += 1)
+      //          case (acc, c) => acc + (c -> 1)
+      //        }).map { case (key, value) => (key, value % 2 == 0) }.values.count(_ == false)
+      //    }
+      def permutePalindrome(input: String): Boolean =
+        input.foldLeft(Map.empty[Char, Int]) { (map, char) => {
+          map + (char -> (map.getOrElse(char, 0) + 1))
+        }}.values.count(_ % 2 == 1) < 2
+    }
+
+    object IdealSolution {
+      def permutePalindrome(input: String): Boolean =
+        // same theory but using groupBy - identity is some magic... needs some research
+        input.groupBy(identity).count(_._2.length % 2 == 1) < 2
     }
   }
 }

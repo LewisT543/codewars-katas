@@ -219,4 +219,30 @@ object Level_7 {
         numbers.sorted.take(2).sum
     }
   }
+
+  object NumberSort {
+    val title = "Number Sort"
+    val description: String = "Sort the numbers in ascending order, handle nulls with an empty array"
+    val difficulty = 7
+
+    object MySolution {
+      // nums.sorted handles nums.empty, cant pass Nil in due to List[Int] type restriction
+      def sol(nums: List[Int]): List[Int] = nums.sorted
+    }
+  }
+
+  object BinaryAddition {
+    val title = "Binary Addition"
+    val description: String = "Add two numbers and display the new value in binary."
+    val difficulty = 7
+
+    object MySolution {
+      def addBinary(a: Int, b: Int): String = (a + b).toBinaryString
+    }
+    
+    object IdealSolution /* possibly? */ {
+      def addBinary(a: Int, b: Int): String =
+        Integer.toString(a + b, 2)
+    }
+  }
 }
